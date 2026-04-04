@@ -7,9 +7,6 @@
 #include <QTextLayout>
 #include <QtMath>
 
-#include "compat.h"
-#include "compat_shellwidget.h"
-
 constexpr int c_qtWeightMin{ 1 };
 constexpr int c_qtWeightMax{ 1000 };
 
@@ -371,7 +368,7 @@ QFont ShellWidget::GetCellFont(const Cell& cell) const noexcept
 	// but we want to match the family name with the bold/italic attributes.
 	cellFont.setStyleName({});
 
-	cellFont.setStyleHint(QFont::TypeWriter, fontStyleStrategy());
+	cellFont.setStyleHint(QFont::TypeWriter, QFont::StyleStrategy(QFont::PreferDefault | QFont::PreferMatch));
 	cellFont.setFixedPitch(true);
 	cellFont.setKerning(false);
 
@@ -568,7 +565,7 @@ void ShellWidget::paintForegroundTextBlock(
 
 		// When the cursor IS within the glyph run, decompose individual characters under the cursor.
 		const int cursorGlyphRunPos { cursorPos - glyphsRendered };
-		auto textGlyphRun = midString(text, glyphsRendered, sizeGlyphRun);
+		auto textGlyphRun = text.mid(glyphsRendered, sizeGlyphRun);
 
 		// Compares a glyph run with and without ligatures. Ligature glyphs are detected as differences
 		// in these two lists. A non-empty newCursorGlyphList indicates glyph substitution is required.
@@ -1032,7 +1029,7 @@ QVariant ShellWidget::TryGetQFontFromDescription(const QString& fdesc) const noe
 	for (const auto& attr : std::as_const(attrs)) {
 		if (attr.size() >= 2 && attr[0] == 'h') {
 			bool ok{ false };
-			qreal height = midString(attr, 1).toFloat(&ok);
+			qreal height = attr.mid(1).toFloat(&ok);
 			if (!ok || height < 0) {
 				return QStringLiteral("Invalid font height");
 			}
@@ -1044,7 +1041,7 @@ QVariant ShellWidget::TryGetQFontFromDescription(const QString& fdesc) const noe
 		} else if (attr == "sb") {
 			weight = QFont::DemiBold;
 		} else if (attr.length() > 0 && attr.at(0) == 'w') {
-			weight = rightString(attr, attr.length() - 1).toInt();
+			weight = attr.right(attr.length() - 1).toInt();
 			if (weight < c_qtWeightMin || weight > c_qtWeightMax) {
 				return QStringLiteral("Invalid font weight");
 			}
@@ -1056,7 +1053,7 @@ QVariant ShellWidget::TryGetQFontFromDescription(const QString& fdesc) const noe
 	QFont font{ attrs.at(0), -1 /*pointSize*/, weight, italic };
 
 	font.setPointSizeF(pointSizeF);
-	font.setStyleHint(QFont::TypeWriter, fontStyleStrategy());
+	font.setStyleHint(QFont::TypeWriter, QFont::StyleStrategy(QFont::PreferDefault | QFont::PreferMatch));
 	font.setFixedPitch(true);
 	font.setKerning(false);
 
