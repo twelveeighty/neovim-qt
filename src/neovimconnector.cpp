@@ -357,11 +357,11 @@ NeovimConnector* NeovimConnector::connectToNeovim(const QString& server)
 
 	const QStringView parsed{ server };
 	int colon_pos = parsed.lastIndexOf(':');
-	if (colon_pos != -1 && colon_pos != 0 && parsed[colon_pos-1] != ':') {
+	if (colon_pos != -1 && colon_pos != 0 && parsed[colon_pos - 1] != ':') {
 		bool ok;
 		int port = parsed.mid(colon_pos + 1).toInt(&ok);
 		if (ok) {
-			QString host{ parsed.mid(0, colon_pos) };
+			QString host{ parsed.mid(0, colon_pos).toString() };
 			return connectToHost(host, port);
 		}
 	}
