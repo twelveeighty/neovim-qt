@@ -368,7 +368,8 @@ QFont ShellWidget::GetCellFont(const Cell& cell) const noexcept
 	// but we want to match the family name with the bold/italic attributes.
 	cellFont.setStyleName({});
 
-	cellFont.setStyleHint(QFont::TypeWriter, QFont::StyleStrategy(QFont::PreferDefault | QFont::PreferMatch));
+	cellFont.setStyleHint(
+		QFont::TypeWriter, QFont::StyleStrategy(QFont::PreferDefault | QFont::PreferMatch));
 	cellFont.setFixedPitch(true);
 	cellFont.setKerning(false);
 
@@ -1027,9 +1028,10 @@ QVariant ShellWidget::TryGetQFontFromDescription(const QString& fdesc) const noe
 	int weight = -1;
 	bool italic = false;
 	for (const auto& attr : std::as_const(attrs)) {
+		const QStringView attrView{ attr };
 		if (attr.size() >= 2 && attr[0] == 'h') {
 			bool ok{ false };
-			qreal height = attr.mid(1).toFloat(&ok);
+			qreal height = attrView.mid(1).toFloat(&ok);
 			if (!ok || height < 0) {
 				return QStringLiteral("Invalid font height");
 			}
@@ -1041,7 +1043,7 @@ QVariant ShellWidget::TryGetQFontFromDescription(const QString& fdesc) const noe
 		} else if (attr == "sb") {
 			weight = QFont::DemiBold;
 		} else if (attr.length() > 0 && attr.at(0) == 'w') {
-			weight = attr.right(attr.length() - 1).toInt();
+			weight = attrView.right(attr.length() - 1).toInt();
 			if (weight < c_qtWeightMin || weight > c_qtWeightMax) {
 				return QStringLiteral("Invalid font weight");
 			}
@@ -1053,7 +1055,8 @@ QVariant ShellWidget::TryGetQFontFromDescription(const QString& fdesc) const noe
 	QFont font{ attrs.at(0), -1 /*pointSize*/, weight, italic };
 
 	font.setPointSizeF(pointSizeF);
-	font.setStyleHint(QFont::TypeWriter, QFont::StyleStrategy(QFont::PreferDefault | QFont::PreferMatch));
+	font.setStyleHint(
+		QFont::TypeWriter, QFont::StyleStrategy(QFont::PreferDefault | QFont::PreferMatch));
 	font.setFixedPitch(true);
 	font.setKerning(false);
 

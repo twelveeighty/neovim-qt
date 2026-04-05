@@ -355,16 +355,17 @@ NeovimConnector* NeovimConnector::connectToNeovim(const QString& server)
 		return spawn();
 	}
 
-	int colon_pos = addr.lastIndexOf(':');
-	if (colon_pos != -1 && colon_pos != 0 && addr[colon_pos-1] != ':') {
+	const QStringView parsed{ server };
+	int colon_pos = parsed.lastIndexOf(':');
+	if (colon_pos != -1 && colon_pos != 0 && parsed[colon_pos-1] != ':') {
 		bool ok;
-		int port = addr.mid(colon_pos + 1).toInt(&ok);
+		int port = parsed.mid(colon_pos + 1).toInt(&ok);
 		if (ok) {
-			QString host = addr.mid(0, colon_pos);
+			QString host{ parsed.mid(0, colon_pos) };
 			return connectToHost(host, port);
 		}
 	}
-	return connectToSocket(addr);
+	return connectToSocket(parsed.toString());
 }
 
 NeovimConnector* NeovimConnector::fromStdinOut()
