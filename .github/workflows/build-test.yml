@@ -5,33 +5,32 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-  workflow_dispatch:
 
 jobs:
   BuildTest:
     name: ${{ matrix.name }}
-    if: false  # TODO: failsafe to prevent this job from running until refactored for Qt6
     strategy:
       fail-fast: false
       matrix:
         include:
           - name: Linux_GCC
             flavor: Debug
-            runner: ubuntu-22.04
+            runner: ubuntu-latest
             generator: Ninja
             cc: gcc
             cxx: g++
 
+        exclude:    # TODO: Exclude these to enable one at a time for testing
           - name: Linux_LLVM
             flavor: Debug
-            runner: ubuntu-22.04
+            runner: ubuntu-latest
             generator: Ninja
             cc: clang
             cxx: clang++
 
           - name: Linux_Release
             flavor: Release
-            runner: ubuntu-22.04
+            runner: ubuntu-latest
             generator: Ninja
             cc: gcc
             cxx: g++
@@ -62,7 +61,7 @@ jobs:
         if: ${{ startsWith(matrix.runner, 'ubuntu') }}
         run: |
           sudo add-apt-repository -y ppa:neovim-ppa/stable
-          sudo apt-get install -y neovim ninja-build libqt5svg5 libqt5svg5-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libfuse2
+          sudo apt-get install -y neovim ninja-build libqt6svg6 qt6-svg-dev libqt6svgwidgets6 qt6-base-dev qtchooser qmake6 qt6-base-dev-tools
           sudo apt-get update -y
 
       - name: MacOS - Setup
