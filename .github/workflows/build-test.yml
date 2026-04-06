@@ -20,36 +20,36 @@ jobs:
             cc: gcc
             cxx: g++
 
-        exclude:    # TODO: Exclude these to enable one at a time for testing
-          - name: Linux_LLVM
-            flavor: Debug
-            runner: ubuntu-latest
-            generator: Ninja
-            cc: clang
-            cxx: clang++
+          # TODO: Disabled to test individually
+          #- name: Linux_LLVM
+          #  flavor: Debug
+          #  runner: ubuntu-latest
+          #  generator: Ninja
+          #  cc: clang
+          #  cxx: clang++
 
-          - name: Linux_Release
-            flavor: Release
-            runner: ubuntu-latest
-            generator: Ninja
-            cc: gcc
-            cxx: g++
-            publish: true
+          #- name: Linux_Release
+          #  flavor: Release
+          #  runner: ubuntu-latest
+          #  generator: Ninja
+          #  cc: gcc
+          #  cxx: g++
+          #  publish: true
 
-          - name: MacOS_GCC
-            flavor: Debug
-            runner: macos-13
-            generator: Ninja
-            cc: gcc-12
-            cxx: g++-12
+          #- name: MacOS_GCC
+          #  flavor: Debug
+          #  runner: macos-13
+          #  generator: Ninja
+          #  cc: gcc-12
+          #  cxx: g++-12
 
-          - name: MacOS_Release
-            flavor: Release
-            runner: macos-13
-            generator: Ninja
-            cc: clang
-            cxx: clang++
-            publish: true
+          #- name: MacOS_Release
+          #  flavor: Release
+          #  runner: macos-13
+          #  generator: Ninja
+          #  cc: clang
+          #  cxx: clang++
+          #  publish: true
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
