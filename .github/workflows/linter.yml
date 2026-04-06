@@ -12,6 +12,8 @@ jobs:
     name: Clazy
     strategy:
       fail-fast: false
+    env:
+      CLANGXX: clang++-15
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,11 +25,6 @@ jobs:
           sudo apt-get update -y
           mkdir build
           cd build
-
-      - name: Switch to Clang 18
-        run: >
-          sudo update-alternatives --verbose
-          --install /usr/bin/clang++                clang++                /usr/bin/clang++-18 100
 
       - name: Configure
         run: >
