@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo add-apt-repository -y ppa:neovim-ppa/unstable
-          sudo apt-get install -y libqt6svg6 qt6-svg-dev libqt6svgwidgets6 libmsgpack-dev neovim ninja-build clazy qt6-base-dev qtchooser qmake6 qt6-base-dev-tools
+          sudo apt-get install -y libqt6svg6 qt6-svg-dev libqt6svgwidgets6 neovim ninja-build clazy qt6-base-dev qtchooser qmake6 qt6-base-dev-tools
           sudo apt-get update -y
           mkdir build
           cd build
@@ -27,7 +27,7 @@ jobs:
       - name: Configure
         run: >
           cmake -B ${{ github.workspace }}/build -GNinja -DCMAKE_BUILD_TYPE=Debug -DENABLE_CLAZY=1
-          -DCMAKE_CXX_COMPILER=clazy -DUSE_SYSTEM_MSGPACK=1
+          -DCMAKE_CXX_COMPILER=clazy
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build
