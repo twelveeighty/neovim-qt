@@ -12,8 +12,6 @@ jobs:
     name: Clazy
     strategy:
       fail-fast: false
-    env:
-      CLANGXX: clang++-15
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +27,7 @@ jobs:
       - name: Configure
         run: >
           cmake -B ${{ github.workspace }}/build -GNinja -DCMAKE_BUILD_TYPE=Debug -DENABLE_CLAZY=1
-          -DCMAKE_CXX_COMPILER=clazy
+          -DCMAKE_CXX_COMPILER=clazy -DUSE_SYSTEM_MSGPACK=1
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build
