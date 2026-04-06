@@ -12,6 +12,8 @@ jobs:
     name: Clazy
     strategy:
       fail-fast: false
+    env:
+      CLANGXX: clang++-18
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,6 +36,7 @@ jobs:
 
   ClangTidy:
     name: ClangTidy
+    if: false # TODO: temporarily turned off to test Clazy Job first
     strategy:
       fail-fast: false
     runs-on: ubuntu-latest
