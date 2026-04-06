@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo add-apt-repository -y ppa:neovim-ppa/unstable
-          sudo apt-get install -y libqt6svg6 qt6-svg-dev libqt6svgwidgets6 neovim ninja-build clazy qt6-base-dev qtchooser qmake6 qt6-base-dev-tools
+          sudo apt-get install -y libqt6svg6 qt6-svg-dev libqt6svgwidgets6 msgpack-c neovim ninja-build clazy qt6-base-dev qtchooser qmake6 qt6-base-dev-tools
           sudo apt-get update -y
           mkdir build
           cd build
