@@ -91,14 +91,19 @@ jobs:
         if: ${{ startsWith(matrix.runner, 'windows') }}
         run: |
           choco install -y neovim ninja
-          setx /m PATH "%PATH%;C:\tools\neovim\nvim-win64\bin"
         shell: pwsh
 
       #
       # Build and Test
       #
-      - name: Neovim Version
+      - name: Test Neovim Version
+        if: ${{ ! startsWith(matrix.runner, 'windows') }}
         run: nvim --version
+
+      - name: Test Neovim Version - Windows
+        if: ${{ startsWith(matrix.runner, 'windows') }}
+        run: C:\tools\neovim\nvim-win64\bin\nvim --version
+        shell: pwsh
 
       - name: Configure
         env:
