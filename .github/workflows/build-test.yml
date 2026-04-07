@@ -20,13 +20,14 @@ jobs:
             cc: gcc
             cxx: g++
 
+          - name: Linux_LLVM
+            flavor: Debug
+            runner: ubuntu-latest
+            generator: Ninja
+            cc: clang
+            cxx: clang++
+
           # TODO: Disabled to test individually
-          #- name: Linux_LLVM
-          #  flavor: Debug
-          #  runner: ubuntu-latest
-          #  generator: Ninja
-          #  cc: clang
-          #  cxx: clang++
 
           #- name: Linux_Release
           #  flavor: Release
