@@ -91,6 +91,8 @@ jobs:
         if: ${{ startsWith(matrix.runner, 'windows') }}
         run: |
           choco install -y neovim ninja
+          set PATH="%PATH%;C:\Program Files\nvim\bin"
+          setx PATH "%PATH%;C:\Program Files\nvim\bin"
         shell: pwsh
 
       #
