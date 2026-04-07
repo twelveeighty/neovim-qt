@@ -91,7 +91,7 @@ jobs:
         if: ${{ startsWith(matrix.runner, 'windows') }}
         run: |
           choco install -y neovim ninja
-          refreshenv
+          setx /m PATH "%PATH%;C:\tools\neovim\nvim-win64\bin"
         shell: pwsh
 
       #
