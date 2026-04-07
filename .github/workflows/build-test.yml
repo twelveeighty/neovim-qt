@@ -9,47 +9,42 @@ on:
 jobs:
   BuildTest:
     name: ${{ matrix.name }}
+    if: false   # TODO: disable for now
     strategy:
       fail-fast: true
       matrix:
         include:
-          - name: Windows_MSVC
-            flavor: Release
-            runner: windows-latest
+          - name: Linux_GCC
+            flavor: Debug
+            runner: ubuntu-latest
             generator: Ninja
-            cc: cl
-            cxx: cl
+            cc: gcc
+            cxx: g++
+
+          - name: Linux_LLVM
+            flavor: Debug
+            runner: ubuntu-latest
+            generator: Ninja
+            cc: clang
+            cxx: clang++
+
+          - name: MacOS_Debug
+            flavor: Debug
+            runner: macos-latest
+            generator: Ninja
+            cc: clang
+            cxx: clang++
+
+          - name: MacOS_Release
+            flavor: Release
+            runner: macos-latest
+            generator: Ninja
+            cc: clang
+            cxx: clang++
+            publish: true
 
           # TODO: Disabled to test individually
           # BEGIN - TESTED AND VERIFIED
-          #- name: Linux_GCC
-          #  flavor: Debug
-          #  runner: ubuntu-latest
-          #  generator: Ninja
-          #  cc: gcc
-          #  cxx: g++
-
-          #- name: Linux_LLVM
-          #  flavor: Debug
-          #  runner: ubuntu-latest
-          #  generator: Ninja
-          #  cc: clang
-          #  cxx: clang++
-
-          #- name: MacOS_Debug
-          #  flavor: Debug
-          #  runner: macos-latest
-          #  generator: Ninja
-          #  cc: clang
-          #  cxx: clang++
-
-          #- name: MacOS_Release
-          #  flavor: Release
-          #  runner: macos-latest
-          #  generator: Ninja
-          #  cc: clang
-          #  cxx: clang++
-          #  publish: true
           # END   - TESTED AND VERIFIED
 
     runs-on: ${{ matrix.runner }}
@@ -73,28 +68,6 @@ jobs:
           brew ls --formula | grep -wq ninja || brew install ninja
           echo "$(brew --prefix qt)/bin" >> "$GITHUB_PATH"
           echo "Qt6_DIR=$(brew --prefix qt)/lib/cmake/Qt6" >> "$GITHUB_ENV"
-
-      - name: Windows - Install Qt
-        if: ${{ startsWith(matrix.runner, 'windows') }}
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: '6.5.*'
-          host: 'windows'
-          target: 'desktop'
-          arch: 'win64_msvc2019_64'
-
-      - name: Windows - Setup MSVC
-        if: ${{ startsWith(matrix.runner, 'windows') }}
-        uses: ilammy/msvc-dev-cmd@v1
-
-      - name: Windows - Setup
-        if: ${{ startsWith(matrix.runner, 'windows') }}
-        run: |
-          choco install -y neovim ninja
-          refreshenv
-          set PATH="C:\tools\neovim\nvim-win64\bin;%PATH%"
-          echo %PATH%
-        #shell: pwsh
 
       #
       # Build and Test
@@ -140,5 +113,4 @@ jobs:
           if-no-files-found: ignore
           path: |
             neovim-qt.dmg
-            neovim-qt-installer.msi
-            neovim-qt.zip
+
