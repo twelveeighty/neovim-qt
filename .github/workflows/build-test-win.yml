@@ -31,7 +31,7 @@ jobs:
         run: |
           iwr "https://github.com/neovim/neovim/releases/download/stable/nvim-win64.zip" -OutFile Neovim.zip
           7z x Neovim.zip
-          set PATH=%PATH%;%CD%\nvim-win64\bin
+          $env:Path += ";" + $PWD.Path + "\nvim-win64\bin"
           nvim --version
         shell: pwsh
 
