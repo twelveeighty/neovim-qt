@@ -101,11 +101,11 @@ jobs:
           mv ./build/bin/nvim-qt.dmg neovim-qt.dmg
 
       - name: Upload Artifacts
-        if: ${{ matrix.publish }}
+        if: ${{ matrix.publish && startsWith(matrix.runner, 'macos') }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.name }}
-          if-no-files-found: ignore
+          if-no-files-found: error
           path: |
             neovim-qt.dmg
 
