@@ -37,5 +37,6 @@ jobs:
           $env:Path += ";" + $PWD.Path + "\nvim-win64\bin"
           nvim --version
           cmake -B ./build -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DENABLE_TESTS=ON
+          cmake --build ${{ github.workspace }}/build
         shell: pwsh
 
