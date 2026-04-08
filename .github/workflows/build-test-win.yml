@@ -8,7 +8,7 @@ on:
 
 jobs:
   BuildTest:
-    name: WinBuildTest
+    name: WinBuildDeploy
     strategy:
       fail-fast: true
     runs-on: windows-latest
@@ -43,4 +43,13 @@ jobs:
         # cd build
         # ctest -VV --timeout 120 --output-on-failure -C Release
         shell: pwsh
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows_Release
+          if-no-files-found: fail
+          path: |
+            neovim-qt.zip
+            build/neovim-qt-installer.msi
 
