@@ -38,6 +38,7 @@ jobs:
           nvim --version
           cmake -B ./build -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DENABLE_TESTS=ON
           cmake --build ${{ github.workspace }}/build --config Release --target install
+          cd build
           cpack --verbose -G WIX
         # cd build
         # ctest -VV --timeout 120 --output-on-failure -C Release
