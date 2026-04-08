@@ -38,11 +38,7 @@ jobs:
           nvim --version
           cmake -B ./build -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DENABLE_TESTS=ON
           cmake --build ${{ github.workspace }}/build
+          cd build
+          ctest -VV --timeout 120 --output-on-failure -C Release
         shell: pwsh
-
-      - name: Test
-        uses: GabrielBB/xvfb-action@v1 # Required by Linux, no X11 $DISPLAY
-        with:
-          working-directory: ${{ github.workspace }}/build
-          run: ctest -VV --timeout 120 --output-on-failure -C Release
 
