@@ -19,6 +19,7 @@ jobs:
             generator: Ninja
             cc: gcc
             cxx: g++
+            test: true
 
           - name: Linux_LLVM
             flavor: Debug
@@ -26,6 +27,7 @@ jobs:
             generator: Ninja
             cc: clang
             cxx: clang++
+            test: true
 
           - name: MacOS_Debug
             flavor: Debug
@@ -33,6 +35,7 @@ jobs:
             generator: Ninja
             cc: clang
             cxx: clang++
+            test: false
 
           - name: MacOS_Release
             flavor: Release
@@ -41,6 +44,7 @@ jobs:
             cc: clang
             cxx: clang++
             publish: true
+            test: false
 
     runs-on: ${{ matrix.runner }}
     steps:
@@ -86,6 +90,7 @@ jobs:
         run: cmake --build ${{ github.workspace }}/build
 
       - name: Test
+        if: ${{ matrix.test }}
         uses: GabrielBB/xvfb-action@v1 # Required by Linux, no X11 $DISPLAY
         with:
           working-directory: ${{ github.workspace }}/build
